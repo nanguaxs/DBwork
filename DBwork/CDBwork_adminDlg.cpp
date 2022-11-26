@@ -147,7 +147,13 @@ void CDBwork_adminDlg::OnBnClickedButton2()//删除按钮
 		AfxMessageBox(TEXT("删除数据失败！"));
 		return;
 	}
-	
+	sprintf_s(query_admin, "DELETE FROM  students "
+		"where S_id=%s;", m_id);
+	if (mysql_query(&m_sqlCon_admin, query_admin))
+	{
+		AfxMessageBox(TEXT("删除数据失败！"));
+		return;
+	}
 	m_list.DeleteItem(nIndex);//删除列表中的项
 	
 	mysql_close(&m_sqlCon_admin);
@@ -229,25 +235,36 @@ void CDBwork_adminDlg::OnBnClickedButton4()//修改
 	char* m_id = T2A(id);
 	char* m_age = T2A(age);
 	char* m_sex = T2A(sex);
-	sprintf_s(query_admin, "INSERT INTO user_account"
-		" VALUES (%s,123456) "//默认密码123456
-		, m_id);
+	sprintf_s(query_admin, "select user_id"
+		" from user_account "
+		"where user_id=%s", m_id);
+	mysql_query(&m_sqlCon_admin, query_admin);
+	m_res = mysql_store_result(&m_sqlCon_admin);
+	row = mysql_fetch_row(m_res);
+	if (row = NULL)
+	{
+		AfxMessageBox(TEXT("该账户不存在，无法修改！"));
+		mysql_close(&m_sqlCon_admin);
+		return;
+	}
+	sprintf_s(query_admin, "UPDATE students"
+		" SET S_name='%s',S_sex='%s',S_age='%s'; "
+		"where S_id='%s'"//默认密码123456
+		, m_name,m_sex,m_age,m_id);
+	if (mysql_query(&m_sqlCon_admin, query_admin))
+	{
+		AfxMessageBox(TEXT("修改数据失败！"));
+		mysql_close(&m_sqlCon_admin);
+		return;
+	}
 	
-	if (mysql_query(&m_sqlCon_admin, query_admin))
-	{
-		AfxMessageBox(TEXT("插入账户数据失败！"));
-		mysql_close(&m_sqlCon_admin);
-		return;
-	}
-	sprintf_s(query_admin, "INSERT INTO students"
-		" VALUES (%s,'%s','%s','%s') "//默认密码123456
-		, m_id, m_name, m_sex, m_age);
-	if (mysql_query(&m_sqlCon_admin, query_admin))
-	{
-		AfxMessageBox(TEXT("插入学生数据失败！"));
-		mysql_close(&m_sqlCon_admin);
-		return;
-	}
+	sprintf_s(query_admin, "select S_id,S_name,user_key,S_sex,S_age"
+		" from user_account,students "
+		"where S_id = user_id;");
+	mysql_query(&m_sqlCon_admin, query_admin);
+	m_res = mysql_store_result(&m_sqlCon_admin);
+	m_list.DeleteAllItems();
+	this->showdata(m_res);
 	mysql_close(&m_sqlCon_admin);
 }
 

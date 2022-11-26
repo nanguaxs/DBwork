@@ -120,17 +120,17 @@ BOOL CDBworkDlg::OnInitDialog()
 	
 	((CButton*)GetDlgItem(IDC_admin))->SetCheck(FALSE);//选上
 	((CButton*)GetDlgItem(IDC_user))->SetCheck(TRUE);//不选上
-	if (connectsql(&m_sqlCon) == 0)
-	{
-		AfxMessageBox(_T("数据库连接失败!"));
-		
-	}
-	else//连接成功则继续访问数据库，之后的相关操作代码基本是放在这里面的
-	{
-		AfxMessageBox(_T("数据库连接成功!"));
-		connected = 1;
-		
-	}
+	//if (connectsql(&m_sqlCon) == 0)
+	//{
+	//	AfxMessageBox(_T("数据库连接失败!"));
+	//	
+	//}
+	//else//连接成功则继续访问数据库，之后的相关操作代码基本是放在这里面的
+	//{
+	//	AfxMessageBox(_T("数据库连接成功!"));
+	//	connected = 1;
+	//	
+	//}
 	//pCDBworkDlg = this;
 
 	//localhost:服务器地址，可以直接填入IP;root:账号;
@@ -200,17 +200,17 @@ void CDBworkDlg::OnBnClickedButtonconnect()
 
 	////localhost:服务器地址，可以直接填入IP;root:账号;
 	////123:密码;test:数据库名;3306:网络端口  
-	//if (connectsql(&m_sqlCon)==0)
-	//{
-	//	AfxMessageBox(_T("数据库连接失败!"));
-	//	return;
-	//}
-	//else//连接成功则继续访问数据库，之后的相关操作代码基本是放在这里面的
-	//{
-	//	AfxMessageBox(_T("数据库连接成功!"));
-	//	connected = 1;
-	//	return;
-	//}
+	if (connectsql(&m_sqlCon)==0)
+	{
+		AfxMessageBox(_T("数据库连接失败!"));
+		return;
+	}
+	else//连接成功则继续访问数据库，之后的相关操作代码基本是放在这里面的
+	{
+		AfxMessageBox(_T("数据库连接成功!"));
+		connected = 1;
+		return;
+	}
 }
 
 
