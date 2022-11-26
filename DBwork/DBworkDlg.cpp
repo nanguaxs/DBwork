@@ -7,14 +7,12 @@
 #include "DBwork.h"
 #include "DBworkDlg.h"
 #include "afxdialogex.h"
-#include <winsock.h>
+#include"sql.h"
 
-#include <mysql.h>
+
 #include"CDBwork_adminDlg.h"
 #include"CDBwork_userDlg.h"
-#pragma comment(lib,"libmySQL.lib")//附加依赖项，也可以在工程属性中设置
 
-#pragma comment(lib,"mysqlclient.lib")
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -22,11 +20,12 @@ int connected=0;
 MYSQL m_sqlCon;
 char query[1024];
 
-char column[50][50];
+
+
 
 //CString query;
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
-
+//CDBworkDlg* CDBworkDlg::pCDBworkDlg = NULL;
 class CAboutDlg : public CDialogEx
 {
 public:
@@ -118,12 +117,21 @@ BOOL CDBworkDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
+	
 	((CButton*)GetDlgItem(IDC_admin))->SetCheck(FALSE);//选上
 	((CButton*)GetDlgItem(IDC_user))->SetCheck(TRUE);//不选上
-
-	//localhost:服务器地址，可以直接填入IP;root:账号;
-	//123:密码;test:数据库名;3306:网络端口  
-	
+	if (connectsql(&m_sqlCon) == 0)
+	{
+		AfxMessageBox(_T("数据库连接失败!"));
+		
+	}
+	else//连接成功则继续访问数据库，之后的相关操作代码基本是放在这里面的
+	{
+		AfxMessageBox(_T("数据库连接成功!"));
+		connected = 1;
+		
+	}
+	//pCDBworkDlg = this;
 
 	//localhost:服务器地址，可以直接填入IP;root:账号;
 	//123:密码;test:数据库名;3306:网络端口  
@@ -186,29 +194,30 @@ HCURSOR CDBworkDlg::OnQueryDragIcon()
 void CDBworkDlg::OnBnClickedButtonconnect()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	
+	connectsql(&m_sqlCon);
 	//初始化数据库对象
-	mysql_init(&m_sqlCon);
+	//mysql_init(&m_sqlCon);
 
-	//localhost:服务器地址，可以直接填入IP;root:账号;
-	//123:密码;test:数据库名;3306:网络端口  
-	if (!mysql_real_connect(&m_sqlCon, "localhost", "root",
-		"123456", "docmanagement", 3306, NULL, 0))
-	{
-		AfxMessageBox(_T("数据库连接失败!"));
-		return;
-	}
-	else//连接成功则继续访问数据库，之后的相关操作代码基本是放在这里面的
-	{
-		AfxMessageBox(_T("数据库连接成功!"));
-		connected = 1;
-	}
+	////localhost:服务器地址，可以直接填入IP;root:账号;
+	////123:密码;test:数据库名;3306:网络端口  
+	//if (connectsql(&m_sqlCon)==0)
+	//{
+	//	AfxMessageBox(_T("数据库连接失败!"));
+	//	return;
+	//}
+	//else//连接成功则继续访问数据库，之后的相关操作代码基本是放在这里面的
+	//{
+	//	AfxMessageBox(_T("数据库连接成功!"));
+	//	connected = 1;
+	//	return;
+	//}
 }
 
 
 void CDBworkDlg::OnBnClickedButtonenter()
 {
 	// TODO: 在此添加控件通知处理程序代码
+	
 	MYSQL_RES* m_res;
 	//m_res = NULL;
 	MYSQL_ROW row;
@@ -279,6 +288,7 @@ void CDBworkDlg::OnBnClickedButtonenter()
 			if (strcmp(row[1], pass)) {
 				CDBwork_adminDlg dlg;
 				dlg.DoModal();
+				
 			}
 			else {
 				AfxMessageBox(_T("密码错误!"));

@@ -1,7 +1,4 @@
 ﻿
-// DBworkDlg.h: 头文件
-//
-
 #pragma once
 
 
@@ -36,4 +33,6 @@ public:
 	afx_msg void OnBnClickedButtonenter();
 	CString m_num;
 	CString m_pass;
+	//static CDBworkDlg* pCDBworkDlg;
+	
 };

@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "afxdialogex.h"
-
+#include"sql.h"
 
 // CDBwork_adminDlg 对话框
 
@@ -21,4 +21,16 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 
 	DECLARE_MESSAGE_MAP()
+public:
+	CString m_id;
+	CString m_name;
+
+	virtual BOOL OnInitDialog();
+	CListCtrl m_list;
+	afx_msg void OnBnClickedButton1();
+	afx_msg void OnBnClickedButton2();
+	
+	afx_msg void OnBnClickedButton3();
+	afx_msg void OnBnClickedButton4();
+	void showdata( MYSQL_RES* m_res);
 };
