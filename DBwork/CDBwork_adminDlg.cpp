@@ -124,6 +124,7 @@ void CDBwork_adminDlg::OnBnClickedButton1()//查询
 	mysql_query(&m_sqlCon_admin, query_admin);
 	if ((m_res = mysql_store_result(&m_sqlCon_admin)) == NULL) {
 		AfxMessageBox(_T("查询账号失败!"));
+		mysql_close(&m_sqlCon_admin);
 		return;
 	}
 	this->showdata(m_res);
@@ -145,6 +146,7 @@ void CDBwork_adminDlg::OnBnClickedButton2()//删除按钮
 	if (mysql_query(&m_sqlCon_admin, query_admin))
 	{
 		AfxMessageBox(TEXT("删除数据失败！"));
+		mysql_close(&m_sqlCon_admin);
 		return;
 	}
 	sprintf_s(query_admin, "DELETE FROM  students "
@@ -152,6 +154,7 @@ void CDBwork_adminDlg::OnBnClickedButton2()//删除按钮
 	if (mysql_query(&m_sqlCon_admin, query_admin))
 	{
 		AfxMessageBox(TEXT("删除数据失败！"));
+		mysql_close(&m_sqlCon_admin);
 		return;
 	}
 	m_list.DeleteItem(nIndex);//删除列表中的项

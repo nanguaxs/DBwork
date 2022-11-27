@@ -230,7 +230,7 @@ void CDBworkDlg::OnBnClickedButtonenter()
 		GetDlgItem(IDC_EDIT_ID)->GetWindowText(temp_id);
 		GetDlgItem(IDC_EDIT_PASS)->GetWindowText(temp_pass);
 		USES_CONVERSION;
-		char* num = T2A(temp_id);
+		char *num = T2A(temp_id);
 		
 		char* pass = T2A(temp_pass);
 		sprintf_s(query, "select user_key from user_account where user_id='%s';",
@@ -245,8 +245,9 @@ void CDBworkDlg::OnBnClickedButtonenter()
 		}
 		
 		if ((row = mysql_fetch_row(m_res)) != NULL) {
-			if (strcmp(row[1],pass)) {
+			if (!strcmp(row[0],pass)) {
 				CDBwork_userDlg dlg;
+				dlg.user_id = num;//能这么做是因为user_id没初始化
 				dlg.DoModal();
 			}
 			else {
