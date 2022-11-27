@@ -192,22 +192,26 @@
     <ClInclude Include="DBwork.h" />
     <ClInclude Include="DBworkDlg.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="paperDlg.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="sql.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="user.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CDBwork_adminDlg.cpp" />
     <ClCompile Include="CDBwork_userDlg.cpp" />
     <ClCompile Include="DBwork.cpp" />
     <ClCompile Include="DBworkDlg.cpp" />
+    <ClCompile Include="paperDlg.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="user.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DBwork.rc" />

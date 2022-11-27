@@ -8,10 +8,9 @@
 #include "DBworkDlg.h"
 #include "afxdialogex.h"
 #include"sql.h"
-
+#include "user.h"
 
 #include"CDBwork_adminDlg.h"
-#include"CDBwork_userDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -246,7 +245,7 @@ void CDBworkDlg::OnBnClickedButtonenter()
 		
 		if ((row = mysql_fetch_row(m_res)) != NULL) {
 			if (!strcmp(row[0],pass)) {
-				CDBwork_userDlg dlg;
+				user dlg;
 				dlg.user_id = num;//能这么做是因为user_id没初始化
 				dlg.DoModal();
 			}
