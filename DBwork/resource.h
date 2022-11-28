@@ -21,6 +21,7 @@
 #define IDC_BUTTON1                     1009
 #define IDC_BUTTON2                     1010
 #define IDC_BUTTON7                     1011
+#define IDC_DONATION                    1011
 #define IDC_LIST1                       1013
 #define IDC_EDIT1                       1014
 #define IDC_EDIT3                       1015
@@ -39,18 +40,33 @@
 #define IDC_CHECK1                      1028
 #define IDC_BUTTON6                     1029
 #define IDC_EDIT14                      1030
+#define IDC_EDIT_BOOK_NAME2             1030
 #define IDC_EDIT15                      1031
+#define IDC_EDIT_BOOK_AUTHOR2           1031
 #define IDC_EDIT10                      1032
+#define IDC_EDIT_BOOK_PUBLISHER2        1032
 #define IDC_EDIT11                      1033
 #define IDC_EDIT12                      1034
+#define IDC_BORROW                      1034
+#define IDC_RETURNBACK                  1035
+#define IDC_BOOK_ID                     1036
+#define IDC_BOOK_NAME                   1037
+#define IDC_BOOK_AUTHOR                 1038
+#define IDC_BOOK_PUBLISHER              1039
+#define IDC_BOOK_QUERY                  1040
+#define IDC_EDIT_BOOK_ID                1041
+#define IDC_EDIT_BOOK_ID2               1042
+#define IDC_EDIT_BOOK_NAME              1043
+#define IDC_EDIT_BOOK_AUTHOR            1044
+#define IDC_EDIT_KEY                    1045
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        140
+#define _APS_NEXT_RESOURCE_VALUE        142
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1030
+#define _APS_NEXT_CONTROL_VALUE         1046
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

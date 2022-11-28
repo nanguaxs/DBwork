@@ -23,4 +23,22 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedButton1();
+	afx_msg void OnBnClickedButton4();
+	afx_msg void OnEnChangeEdit16();
+	afx_msg void OnStnClickedBookId();
+	afx_msg void OnBnClickedBookQuery();
+	afx_msg void OnEnChangeEdit3();
+	afx_msg void OnEnChangeEdit4();
+	afx_msg void OnEnChangeEditBookId2();
+	afx_msg void OnBnClickedDonation();
+	afx_msg void OnEnChangeEditBookPublisher2();
+	afx_msg void OnEnChangeEditBookAuthor2();
+	afx_msg void OnEnChangeEditBookName2();
+	afx_msg void OnLvnItemchangedList2(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnBnClickedReturnback();
+	afx_msg void OnLvnItemchangedList1(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnEnChangeEditBookId();
+	afx_msg void OnEnChangeEditBookName();
+	afx_msg void OnEnChangeEditBookAuthor();
+	afx_msg void OnEnChangeEdit6();
 };

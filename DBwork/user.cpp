@@ -38,7 +38,7 @@ END_MESSAGE_MAP()
 // user 消息处理程序
 
 
-void user::OnBnClickedButton1()
+void user::OnBnClickedButton1()//修改密码按钮
 {
 	// TODO: 在此添加控件通知处理程序代码
 	MYSQL m_sqlCon;
