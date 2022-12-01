@@ -51,6 +51,7 @@ BEGIN_MESSAGE_MAP(CDBwork_adminDlg, CDialogEx)
 	//ON_EN_CHANGE(IDC_EDIT1, &CDBwork_adminDlg::OnEnChangeEdit1)
 	ON_BN_CLICKED(IDC_BUTTON3, &CDBwork_adminDlg::OnBnClickedButton3)
 	ON_BN_CLICKED(IDC_BUTTON4, &CDBwork_adminDlg::OnBnClickedButton4)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST1, &CDBwork_adminDlg::OnLvnItemchangedList1)
 END_MESSAGE_MAP()
 
 
@@ -244,7 +245,7 @@ void CDBwork_adminDlg::OnBnClickedButton4()//修改
 	mysql_query(&m_sqlCon_admin, query_admin);
 	m_res = mysql_store_result(&m_sqlCon_admin);
 	row = mysql_fetch_row(m_res);
-	if (row = NULL)
+	if (row == NULL)
 	{
 		AfxMessageBox(TEXT("该账户不存在，无法修改！"));
 		mysql_close(&m_sqlCon_admin);
@@ -289,4 +290,12 @@ void CDBwork_adminDlg::showdata(MYSQL_RES* m_res)
 
 	}
 	return ;
+}
+
+
+void CDBwork_adminDlg::OnLvnItemchangedList1(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	*pResult = 0;
 }

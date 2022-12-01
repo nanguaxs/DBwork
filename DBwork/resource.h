@@ -49,6 +49,7 @@
 #define IDC_EDIT12                      1034
 #define IDC_BORROW                      1034
 #define IDC_RETURNBACK                  1035
+#define IDC_BOOK_QUERY2                 1035
 #define IDC_BOOK_ID                     1036
 #define IDC_BOOK_NAME                   1037
 #define IDC_BOOK_AUTHOR                 1038
@@ -59,6 +60,7 @@
 #define IDC_EDIT_BOOK_NAME              1043
 #define IDC_EDIT_BOOK_AUTHOR            1044
 #define IDC_EDIT_KEY                    1045
+#define IDC_RETURNBACK2                 1045
 
 // Next default values for new objects
 // 

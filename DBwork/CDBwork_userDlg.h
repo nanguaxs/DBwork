@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "afxdialogex.h"
-
+#include "sql.h"
 
 // CDBwork_userDlg 对话框
 
@@ -21,7 +21,16 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 
 	DECLARE_MESSAGE_MAP()
-public:
+public://顾名扬修改
+	CString c_id;
+	CString c_name;
+	CString c_author;
+	//CString c_publisher;
+	//CString c_state;
+	CListCtrl c_list;
+	CListCtrl c_list2;
+	void showdata( MYSQL_RES* m_res);
+	void showdata2(MYSQL_RES* m_res);
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedButton4();
 	afx_msg void OnEnChangeEdit16();
@@ -41,4 +50,7 @@ public:
 	afx_msg void OnEnChangeEditBookName();
 	afx_msg void OnEnChangeEditBookAuthor();
 	afx_msg void OnEnChangeEdit6();
+	afx_msg void OnBnClickedBorrow();
+	afx_msg void OnStnClickedBookAuthor();
+	afx_msg void OnBnClickedBookQuery2();
 };

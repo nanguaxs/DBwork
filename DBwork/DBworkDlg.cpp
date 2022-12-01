@@ -216,13 +216,13 @@ void CDBworkDlg::OnBnClickedButtonconnect()
 }
 
 
-void CDBworkDlg::OnBnClickedButtonenter()
+void CDBworkDlg::OnBnClickedButtonenter()//登录界面
 {
 	// TODO: 在此添加控件通知处理程序代码
 	
 	MYSQL_RES* m_res;
 	//m_res = NULL;
-	MYSQL_ROW row;
+	MYSQL_ROW row;/* return data as array of strings */
 	CString temp_id,temp_pass;
 	if (connected == 0) {
 		AfxMessageBox(_T("请先连接数据库!"));
@@ -275,7 +275,7 @@ void CDBworkDlg::OnBnClickedButtonenter()
 		GetDlgItem(IDC_EDIT_ID)->GetWindowText(temp_id);
 		GetDlgItem(IDC_EDIT_PASS)->GetWindowText(temp_pass);
 		USES_CONVERSION;
-		char* num = T2A(temp_id);
+		char* num = T2A(temp_id);//CString ==> char*
 
 		char* pass = T2A(temp_pass);
 		sprintf_s(query, "select admin_key from admin_account where admin_id='%s';",

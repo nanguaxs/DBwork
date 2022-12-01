@@ -7,12 +7,22 @@
 #include "CDBwork_userDlg.h"
 #include"sql.h"
 
+#include"CDBwork_adminDlg.h"
+
+MYSQL m_sqlCon_client;
+char query_client[1024] = "";
+
+
 // CDBwork_userDlg 对话框
 
 IMPLEMENT_DYNAMIC(CDBwork_userDlg, CDialogEx)
 
 CDBwork_userDlg::CDBwork_userDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_user, pParent)
+	//顾名扬修改
+	, c_id(_T(""))
+	, c_name(_T(""))
+	, c_author(_T(""))
 {
 	
 }
@@ -22,8 +32,13 @@ CDBwork_userDlg::~CDBwork_userDlg()
 }
 
 void CDBwork_userDlg::DoDataExchange(CDataExchange* pDX)
-{
+{//顾名扬修改
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Text(pDX, IDC_EDIT_BOOK_ID, c_id);
+	DDX_Text(pDX, IDC_EDIT_BOOK_NAME, c_name);
+	DDX_Text(pDX, IDC_EDIT_BOOK_AUTHOR, c_author);
+	DDX_Control(pDX, IDC_LIST1, c_list);
+	DDX_Control(pDX, IDC_LIST2, c_list2);
 }
 
 
@@ -47,13 +62,16 @@ BEGIN_MESSAGE_MAP(CDBwork_userDlg, CDialogEx)
 	ON_EN_CHANGE(IDC_EDIT_BOOK_NAME, &CDBwork_userDlg::OnEnChangeEditBookName)
 	ON_EN_CHANGE(IDC_EDIT_BOOK_AUTHOR, &CDBwork_userDlg::OnEnChangeEditBookAuthor)
 	ON_EN_CHANGE(IDC_EDIT6, &CDBwork_userDlg::OnEnChangeEdit6)
+	ON_BN_CLICKED(IDC_BORROW, &CDBwork_userDlg::OnBnClickedBorrow)
+	ON_STN_CLICKED(IDC_BOOK_AUTHOR, &CDBwork_userDlg::OnStnClickedBookAuthor)
+	ON_BN_CLICKED(IDC_BOOK_QUERY2, &CDBwork_userDlg::OnBnClickedBookQuery2)
 END_MESSAGE_MAP()
 
 
 // CDBwork_userDlg 消息处理程序
 
 
-void CDBwork_userDlg::OnBnClickedButton1()
+void CDBwork_userDlg::OnBnClickedButton1()//修改密码
 {
 	// TODO: 在此添加控件通知处理程序代码
 	MYSQL m_sqlCon;
@@ -115,9 +133,74 @@ void CDBwork_userDlg::OnStnClickedBookId()
 }
 
 
-void CDBwork_userDlg::OnBnClickedBookQuery()
+void CDBwork_userDlg::OnBnClickedBookQuery()//书籍查询
 {
 	// TODO: 在此添加控件通知处理程序代码
+	//顾名扬完成
+	CString name, id, author;
+	c_list.DeleteAllItems();
+	MYSQL_RES* m_res;
+	//m_res = NULL;
+	//MYSQL_ROW row;
+	GetDlgItem(IDC_EDIT_BOOK_ID)->GetWindowText(id);
+	GetDlgItem(IDC_EDIT_BOOK_NAME)->GetWindowText(name);
+	GetDlgItem(IDC_EDIT_BOOK_AUTHOR)->GetWindowText(author);
+	USES_CONVERSION;
+	char* b_name = T2A(name);
+	char* b_id = T2A(id);
+	char* b_author = T2A(author);
+	if (id.IsEmpty() && name.IsEmpty() && author.IsEmpty()) {//三个都不知道，则查询所有在库书籍
+		sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher，book_state"
+			" from book ;"
+		);
+	}
+	else if (id.IsEmpty() && name.IsEmpty()==0 && author.IsEmpty()==0) {//id不知道
+		sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher，book_state"
+			" from book "
+			"where book_name = '%s' AND book_author='%s';", b_name, b_author);
+	}
+	else if (id.IsEmpty()==0 && name.IsEmpty()  && author.IsEmpty() == 0) {//name不知道
+		sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher，book_state"
+			" from book "
+			"where book_id = '%s' AND book_author='%s';", b_id, b_author);
+	}
+	else if (id.IsEmpty() == 0 && name.IsEmpty()==0 && author.IsEmpty()) {//author不知道
+		sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher，book_state"
+			" from book "
+			"where book_id = '%s' AND book_name='%s';", b_id, b_name);
+	}
+	else if (id.IsEmpty() == 0 && name.IsEmpty()  && author.IsEmpty()) {//只知道id
+		sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher，book_state"
+			" from book "
+			"where book_id = '%s' ;", b_id);
+	}
+	else if (id.IsEmpty()  && name.IsEmpty()==0 && author.IsEmpty()) {//只知道name
+		sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher，book_state"
+			" from book "
+			"where book_name = '%s' ;", b_name);
+	}
+	else if (id.IsEmpty() && name.IsEmpty() && author.IsEmpty()==0) {//只知道author
+		sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher，book_state"
+			" from book "
+			"where book_author = '%s' ;", b_author);
+	}
+	else {//三个都知道，其实和只知道id一样
+		sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher，book_state"
+			" from book "
+			"where book_id = '%s' AND book_name = '%s' AND book_author='%s';", b_id, b_name, b_author);
+	}
+
+	connectsql(&m_sqlCon_client);
+
+	mysql_query(&m_sqlCon_client, query_client);
+	if ((m_res = mysql_store_result(&m_sqlCon_client)) == NULL) {
+		AfxMessageBox(_T("查询书籍失败!"));
+		mysql_close(&m_sqlCon_client);
+		return;
+	}
+	this->showdata(m_res);
+	mysql_close(&m_sqlCon_client);
+	
 }
 
 
@@ -158,20 +241,52 @@ void CDBwork_userDlg::OnBnClickedDonation()//图书捐赠按钮
 {
 	// TODO: 在此添加控件通知处理程序代码
 	// 顾名扬完成
-	CString DonateBookID;
-	CString DonateBookName;
-	CString DonateBookAuthor;
-	CString DonateBookPublisher;
-	GetDlgItemText(IDC_EDIT_BOOK_ID2, DonateBookID);
-	GetDlgItemText(IDC_EDIT_BOOK_NAME2, DonateBookName);
-	GetDlgItemText(IDC_EDIT_BOOK_AUTHOR2, DonateBookAuthor);
-	GetDlgItemText(IDC_EDIT_BOOK_PUBLISHER2, DonateBookPublisher);
-	if (DonateBookID == "" || DonateBookName == "" || DonateBookAuthor == "" || DonateBookPublisher == "")
+	//存在问题尚未解决：1、无法保证信息都被填满
+	MYSQL_RES* m_res;
+	//m_res = NULL;
+	MYSQL_ROW row;
+	CString DonateBookID,DonateBookName,DonateBookAuthor,DonateBookPublisher;
+	connectsql(&m_sqlCon_client);
+	GetDlgItem(IDC_EDIT_BOOK_ID2)->GetWindowText(DonateBookID);
+	GetDlgItem(IDC_EDIT_BOOK_NAME2)->GetWindowText(DonateBookName);
+	GetDlgItem(IDC_EDIT_BOOK_AUTHOR2)->GetWindowText(DonateBookAuthor);
+	GetDlgItem(IDC_EDIT_BOOK_PUBLISHER2)->GetWindowText(DonateBookPublisher);
+	USES_CONVERSION;
+	char* bid = T2A(DonateBookID);//CString ==> char*
+	char* bname = T2A(DonateBookName);
+	char* bauthor = T2A(DonateBookAuthor);
+	char* bpublisher = T2A(DonateBookPublisher);
+	sprintf_s(query_client, "select book_id"
+		" from book "
+		"where book_id=%s", bid);
+	mysql_query(&m_sqlCon_client, query_client);
+	m_res = mysql_store_result(&m_sqlCon_client);
+	row = mysql_fetch_row(m_res);
+	if (row != NULL)
+	{
+		AfxMessageBox(TEXT("该书籍已存在！"));
+		mysql_close(&m_sqlCon_client);
+		return;
+	}
+	sprintf_s(query_client, "INSERT INTO book(book_id,book_name,book_author,book_publisher，book_state) VALUES('%s','%s','%s','%s','%s');",
+		bid, bname, bauthor, bpublisher,"在册");  //出现问题但不知道怎么改（_Param_(7) 在对“sprintf_s”调用中必须是字符串地址。实际类型: “int”）
+	if (mysql_query(&m_sqlCon_client, query_client))
+	{
+		AfxMessageBox(TEXT("捐赠失败，请重新尝试！"));
+		mysql_close(&m_sqlCon_client);
+		return;
+	}
+	else if (DonateBookID.IsEmpty() || DonateBookName.IsEmpty() || DonateBookAuthor.IsEmpty() || DonateBookPublisher.IsEmpty())
 	{
 		AfxMessageBox(_T("捐赠失败，请填写完整信息"));
+		mysql_close(&m_sqlCon_client);
+		return;
 	}
-	else {
-		AfxMessageBox(_T("捐赠成功，感谢您的捐赠"));
+	else
+	{
+		AfxMessageBox(TEXT("捐赠成功，感谢您的捐赠！"));
+		mysql_close(&m_sqlCon_client);
+		return;
 	}
 }
 
@@ -209,7 +324,7 @@ void CDBwork_userDlg::OnEnChangeEditBookName2()
 }
 
 
-void CDBwork_userDlg::OnLvnItemchangedList2(NMHDR* pNMHDR, LRESULT* pResult)
+void CDBwork_userDlg::OnLvnItemchangedList2(NMHDR* pNMHDR, LRESULT* pResult)//借阅框
 {
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	// TODO: 在此添加控件通知处理程序代码
@@ -223,7 +338,7 @@ void CDBwork_userDlg::OnBnClickedReturnback()
 }
 
 
-void CDBwork_userDlg::OnLvnItemchangedList1(NMHDR* pNMHDR, LRESULT* pResult)
+void CDBwork_userDlg::OnLvnItemchangedList1(NMHDR* pNMHDR, LRESULT* pResult)//查询框
 {
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	// TODO: 在此添加控件通知处理程序代码
@@ -272,4 +387,104 @@ void CDBwork_userDlg::OnEnChangeEdit6()
 	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
 
 	// TODO:  在此添加控件通知处理程序代码
+}
+
+
+void CDBwork_userDlg::showdata(MYSQL_RES* m_res)//用来显示查询框的内容
+{
+	// TODO: 在此处添加实现代码.
+	CString data[5];
+	MYSQL_ROW row;
+	while ((row = mysql_fetch_row(m_res)) != NULL) {
+		for (int i = 0; i < 5; i++) {
+			data[i] = row[i];
+		}
+		c_list.InsertItem(0, data[0]);
+		c_list.SetItemText(0, 1, data[1]);
+		c_list.SetItemText(0, 2, data[2]);
+		c_list.SetItemText(0, 3, data[3]);
+		c_list.SetItemText(0, 4, data[4]);
+
+	}
+	return;
+}
+void CDBwork_userDlg::showdata2(MYSQL_RES* m_res)//用来显示借阅框的内容
+{
+	// TODO: 在此处添加实现代码.
+	CString data[5];
+	MYSQL_ROW row;
+	while ((row = mysql_fetch_row(m_res)) != NULL) {
+		for (int i = 0; i < 5; i++) {
+			data[i] = row[i];
+		}
+		c_list2.InsertItem(0, data[0]);
+		c_list2.SetItemText(0, 1, data[1]);
+		c_list2.SetItemText(0, 2, data[2]);
+		c_list2.SetItemText(0, 3, data[3]);
+		c_list2.SetItemText(0, 4, data[4]);
+
+	}
+	return;
+}
+
+void CDBwork_userDlg::OnBnClickedBorrow()//借阅图书
+{
+	// TODO: 在此添加控件通知处理程序代码
+	//顾名扬完成
+	int nIndex = c_list.GetSelectionMark();   //获取查询框选中行的行号
+	CString s_id = c_list.GetItemText(nIndex, 0);   //获取查询框第0列内容
+	CString s_state = c_list.GetItemText(nIndex, 4);   //获取查询框第4列内容
+	MYSQL_RES* m_res;
+	connectsql(&m_sqlCon_client);
+	USES_CONVERSION;
+	char* m_id = T2A(s_id);
+	char* m_state = T2A(s_state);
+	sprintf_s(query_client, "UPDATE book "
+		"SET book_state='被借阅' "
+		"where book_id=%s;", m_id);
+	if (mysql_query(&m_sqlCon_client, query_client))
+	{
+		AfxMessageBox(TEXT("借阅书籍失败，请重新尝试！"));
+		mysql_close(&m_sqlCon_client);
+		return;
+	}
+	if (s_state == "被借阅")
+	{
+		AfxMessageBox(TEXT("此书已被借阅，请借阅其他书籍！"));
+		mysql_close(&m_sqlCon_client);
+		return;
+	}
+	OnBnClickedBookQuery2();//在借阅框中显示所有自己借过的书
+	/*sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher,book_state"
+		" from book "
+		"where book_state = '被借阅';");
+	mysql_query(&m_sqlCon_client, query_client);
+	m_res = mysql_store_result(&m_sqlCon_client);
+	c_list.DeleteAllItems();
+	this->showdata(m_res);//待定
+	mysql_close(&m_sqlCon_client);*/
+}
+
+
+void CDBwork_userDlg::OnStnClickedBookAuthor()
+{
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CDBwork_userDlg::OnBnClickedBookQuery2()//用户借阅书籍查询
+{
+	// TODO: 在此添加控件通知处理程序代码
+	//顾名扬完成
+	MYSQL_RES* m_res;
+	connectsql(&m_sqlCon_client);
+	USES_CONVERSION;
+	sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher,book_state"
+		" from user_account,students，book, record "
+		"where S_id = user_id AND user_id = id_user AND book_state = '被借阅';");
+	mysql_query(&m_sqlCon_client, query_client);
+	m_res = mysql_store_result(&m_sqlCon_client);
+	c_list2.DeleteAllItems();
+	this->showdata2(m_res);
+	mysql_close(&m_sqlCon_client);
 }
