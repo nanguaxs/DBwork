@@ -8,7 +8,7 @@
 #include "CDBwork_adminDlg.h"
 #include "sql.h"
 #include< windows.h >
-
+#include"adminmanage.h"
 
 MYSQL m_sqlCon_admin;
 
@@ -52,6 +52,7 @@ BEGIN_MESSAGE_MAP(CDBwork_adminDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON3, &CDBwork_adminDlg::OnBnClickedButton3)
 	ON_BN_CLICKED(IDC_BUTTON4, &CDBwork_adminDlg::OnBnClickedButton4)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST1, &CDBwork_adminDlg::OnLvnItemchangedList1)
+	ON_BN_CLICKED(IDC_BUTTON5, &CDBwork_adminDlg::OnBnClickedButton5)
 END_MESSAGE_MAP()
 
 
@@ -298,4 +299,13 @@ void CDBwork_adminDlg::OnLvnItemchangedList1(NMHDR* pNMHDR, LRESULT* pResult)
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	// TODO: 在此添加控件通知处理程序代码
 	*pResult = 0;
+}
+
+
+void CDBwork_adminDlg::OnBnClickedButton5()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	adminmanage dlg;
+	dlg.DoModal();
+
 }

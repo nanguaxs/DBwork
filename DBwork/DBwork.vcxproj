@@ -189,6 +189,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="adminmanage.h" />
     <ClInclude Include="CDBwork_adminDlg.h" />
     <ClInclude Include="CDBwork_userDlg.h" />
     <ClInclude Include="DBwork.h" />
@@ -202,6 +203,7 @@
     <ClInclude Include="user.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="adminmanage.cpp" />
     <ClCompile Include="CDBwork_adminDlg.cpp" />
     <ClCompile Include="CDBwork_userDlg.cpp" />
     <ClCompile Include="DBwork.cpp" />
