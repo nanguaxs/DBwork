@@ -29,6 +29,7 @@ public://顾名扬修改
 	//CString c_state;
 	CListCtrl c_list;
 	CListCtrl c_list2;
+	virtual BOOL OnInitDialog();
 	void showdata( MYSQL_RES* m_res);
 	void showdata2(MYSQL_RES* m_res);
 	afx_msg void OnBnClickedButton1();

@@ -133,6 +133,31 @@ void CDBwork_userDlg::OnStnClickedBookId()
 }
 
 
+BOOL CDBwork_userDlg::OnInitDialog()//顾名扬增加
+{//图书查询框
+	CDialogEx::OnInitDialog();
+
+	// TODO:  在此添加额外的初始化
+	CRect rect;
+
+	// 获取编程语言列表视图控件的位置和大小   
+	c_list.GetClientRect(&rect);
+
+	// 为列表视图控件添加全行选中和栅格风格   
+	c_list.SetExtendedStyle(c_list.GetExtendedStyle() | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
+
+	// 为列表视图控件添加列   
+	c_list.InsertColumn(0, _T("书籍编号"), LVCFMT_CENTER, rect.Width() / 5, 0);
+	c_list.InsertColumn(1, _T("书名"), LVCFMT_CENTER, rect.Width() / 5, 1);
+	c_list.InsertColumn(2, _T("作者"), LVCFMT_CENTER, rect.Width() / 5, 2);
+	c_list.InsertColumn(3, _T("出版社"), LVCFMT_CENTER, rect.Width() / 5, 3);
+	c_list.InsertColumn(4, _T("借阅状态"), LVCFMT_CENTER, rect.Width() / 5, 4);
+	//CDBworkDlg* p=CDBworkDlg::pCDBworkDlg;
+	SetConsoleOutputCP(65001);
+	return TRUE;  // return TRUE unless you set the focus to a control
+	// 异常: OCX 属性页应返回 FALSE
+}
+
 void CDBwork_userDlg::OnBnClickedBookQuery()//书籍查询
 {
 	// TODO: 在此添加控件通知处理程序代码
@@ -150,42 +175,42 @@ void CDBwork_userDlg::OnBnClickedBookQuery()//书籍查询
 	char* b_id = T2A(id);
 	char* b_author = T2A(author);
 	if (id.IsEmpty() && name.IsEmpty() && author.IsEmpty()) {//三个都不知道，则查询所有在库书籍
-		sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher，book_state"
+		sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher,book_state"
 			" from book ;"
 		);
 	}
-	else if (id.IsEmpty() && name.IsEmpty()==0 && author.IsEmpty()==0) {//id不知道
-		sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher，book_state"
+	else if (id.IsEmpty() && name.IsEmpty() == 0 && author.IsEmpty() == 0) {//id不知道
+		sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher,book_state"
 			" from book "
 			"where book_name = '%s' AND book_author='%s';", b_name, b_author);
 	}
 	else if (id.IsEmpty()==0 && name.IsEmpty()  && author.IsEmpty() == 0) {//name不知道
-		sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher，book_state"
+		sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher,book_state"
 			" from book "
 			"where book_id = '%s' AND book_author='%s';", b_id, b_author);
 	}
 	else if (id.IsEmpty() == 0 && name.IsEmpty()==0 && author.IsEmpty()) {//author不知道
-		sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher，book_state"
+		sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher,book_state"
 			" from book "
 			"where book_id = '%s' AND book_name='%s';", b_id, b_name);
 	}
 	else if (id.IsEmpty() == 0 && name.IsEmpty()  && author.IsEmpty()) {//只知道id
-		sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher，book_state"
+		sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher,book_state"
 			" from book "
 			"where book_id = '%s' ;", b_id);
 	}
 	else if (id.IsEmpty()  && name.IsEmpty()==0 && author.IsEmpty()) {//只知道name
-		sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher，book_state"
+		sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher,book_state"
 			" from book "
 			"where book_name = '%s' ;", b_name);
 	}
 	else if (id.IsEmpty() && name.IsEmpty() && author.IsEmpty()==0) {//只知道author
-		sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher，book_state"
+		sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher,book_state"
 			" from book "
 			"where book_author = '%s' ;", b_author);
 	}
 	else {//三个都知道，其实和只知道id一样
-		sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher，book_state"
+		sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher,book_state"
 			" from book "
 			"where book_id = '%s' AND book_name = '%s' AND book_author='%s';", b_id, b_name, b_author);
 	}
@@ -241,7 +266,7 @@ void CDBwork_userDlg::OnBnClickedDonation()//图书捐赠按钮
 {
 	// TODO: 在此添加控件通知处理程序代码
 	// 顾名扬完成
-	//存在问题尚未解决：1、无法保证信息都被填满
+	//完全解决
 	MYSQL_RES* m_res;
 	//m_res = NULL;
 	MYSQL_ROW row;
@@ -256,6 +281,12 @@ void CDBwork_userDlg::OnBnClickedDonation()//图书捐赠按钮
 	char* bname = T2A(DonateBookName);
 	char* bauthor = T2A(DonateBookAuthor);
 	char* bpublisher = T2A(DonateBookPublisher);
+	if (DonateBookID.IsEmpty() || DonateBookName.IsEmpty() || DonateBookAuthor.IsEmpty() || DonateBookPublisher.IsEmpty())
+	{
+		AfxMessageBox(_T("捐赠失败，请填写完整信息"));
+		mysql_close(&m_sqlCon_client);
+		return;
+	}
 	sprintf_s(query_client, "select book_id"
 		" from book "
 		"where book_id=%s", bid);
@@ -268,21 +299,14 @@ void CDBwork_userDlg::OnBnClickedDonation()//图书捐赠按钮
 		mysql_close(&m_sqlCon_client);
 		return;
 	}
-	sprintf_s(query_client, "INSERT INTO book(book_id,book_name,book_author,book_publisher，book_state) VALUES('%s','%s','%s','%s','%s');",
-		bid, bname, bauthor, bpublisher,"在册");  //出现问题但不知道怎么改（_Param_(7) 在对“sprintf_s”调用中必须是字符串地址。实际类型: “int”）
-	if (mysql_query(&m_sqlCon_client, query_client))
-	{
-		AfxMessageBox(TEXT("捐赠失败，请重新尝试！"));
-		mysql_close(&m_sqlCon_client);
-		return;
-	}
-	else if (DonateBookID.IsEmpty() || DonateBookName.IsEmpty() || DonateBookAuthor.IsEmpty() || DonateBookPublisher.IsEmpty())
+	sprintf_s(query_client, "INSERT INTO book VALUES('%s','%s','%s','%s','%s');",bid, bname, bauthor, bpublisher,"在册");  
+	if (DonateBookID.IsEmpty() || DonateBookName.IsEmpty() || DonateBookAuthor.IsEmpty() || DonateBookPublisher.IsEmpty())
 	{
 		AfxMessageBox(_T("捐赠失败，请填写完整信息"));
 		mysql_close(&m_sqlCon_client);
 		return;
 	}
-	else
+	if (DonateBookID.IsEmpty() || DonateBookName.IsEmpty() || DonateBookAuthor.IsEmpty() || DonateBookPublisher.IsEmpty())
 	{
 		AfxMessageBox(TEXT("捐赠成功，感谢您的捐赠！"));
 		mysql_close(&m_sqlCon_client);
@@ -338,7 +362,7 @@ void CDBwork_userDlg::OnBnClickedReturnback()
 }
 
 
-void CDBwork_userDlg::OnLvnItemchangedList1(NMHDR* pNMHDR, LRESULT* pResult)//查询框
+void CDBwork_userDlg::OnLvnItemchangedList1(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	// TODO: 在此添加控件通知处理程序代码
