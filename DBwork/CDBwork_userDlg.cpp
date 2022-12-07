@@ -65,6 +65,7 @@ BEGIN_MESSAGE_MAP(CDBwork_userDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BORROW, &CDBwork_userDlg::OnBnClickedBorrow)
 	ON_STN_CLICKED(IDC_BOOK_AUTHOR, &CDBwork_userDlg::OnStnClickedBookAuthor)
 	ON_BN_CLICKED(IDC_BOOK_QUERY2, &CDBwork_userDlg::OnBnClickedBookQuery2)
+	ON_BN_CLICKED(IDC_RETURNBACK2, &CDBwork_userDlg::OnBnClickedReturnback2)
 END_MESSAGE_MAP()
 
 
@@ -142,16 +143,21 @@ BOOL CDBwork_userDlg::OnInitDialog()//顾名扬增加
 
 	// 获取编程语言列表视图控件的位置和大小   
 	c_list.GetClientRect(&rect);
-
+	c_list2.GetClientRect(&rect);
 	// 为列表视图控件添加全行选中和栅格风格   
 	c_list.SetExtendedStyle(c_list.GetExtendedStyle() | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
-
+	c_list2.SetExtendedStyle(c_list2.GetExtendedStyle() | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 	// 为列表视图控件添加列   
 	c_list.InsertColumn(0, _T("书籍编号"), LVCFMT_CENTER, rect.Width() / 5, 0);
 	c_list.InsertColumn(1, _T("书名"), LVCFMT_CENTER, rect.Width() / 5, 1);
 	c_list.InsertColumn(2, _T("作者"), LVCFMT_CENTER, rect.Width() / 5, 2);
 	c_list.InsertColumn(3, _T("出版社"), LVCFMT_CENTER, rect.Width() / 5, 3);
 	c_list.InsertColumn(4, _T("借阅状态"), LVCFMT_CENTER, rect.Width() / 5, 4);
+	c_list2.InsertColumn(0, _T("书籍编号"), LVCFMT_CENTER, rect.Width() / 5, 0);
+	c_list2.InsertColumn(1, _T("书名"), LVCFMT_CENTER, rect.Width() / 5, 1);
+	c_list2.InsertColumn(2, _T("作者"), LVCFMT_CENTER, rect.Width() / 5, 2);
+	c_list2.InsertColumn(3, _T("出版社"), LVCFMT_CENTER, rect.Width() / 5, 3);
+	c_list2.InsertColumn(4, _T("借阅状态"), LVCFMT_CENTER, rect.Width() / 5, 4);
 	//CDBworkDlg* p=CDBworkDlg::pCDBworkDlg;
 	SetConsoleOutputCP(65001);
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -455,6 +461,7 @@ void CDBwork_userDlg::OnBnClickedBorrow()//借阅图书
 {
 	// TODO: 在此添加控件通知处理程序代码
 	//顾名扬完成
+	//问题：实际上表里的数据已经改为借阅模式，但是未能够成功实现在显示框内展现借阅的书籍
 	int nIndex = c_list.GetSelectionMark();   //获取查询框选中行的行号
 	CString s_id = c_list.GetItemText(nIndex, 0);   //获取查询框第0列内容
 	CString s_state = c_list.GetItemText(nIndex, 4);   //获取查询框第4列内容
@@ -478,7 +485,12 @@ void CDBwork_userDlg::OnBnClickedBorrow()//借阅图书
 		mysql_close(&m_sqlCon_client);
 		return;
 	}
-	OnBnClickedBookQuery2();//在借阅框中显示所有自己借过的书
+	else{
+		AfxMessageBox(TEXT("借阅成功！"));
+		mysql_close(&m_sqlCon_client);
+		return;
+	}
+	//OnBnClickedBookQuery2();//在借阅框中显示所有自己借过的书
 	/*sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher,book_state"
 		" from book "
 		"where book_state = '被借阅';");
@@ -511,4 +523,39 @@ void CDBwork_userDlg::OnBnClickedBookQuery2()//用户借阅书籍查询
 	c_list2.DeleteAllItems();
 	this->showdata2(m_res);
 	mysql_close(&m_sqlCon_client);
+}
+
+
+void CDBwork_userDlg::OnBnClickedReturnback2()//借阅书籍归还
+{
+	// TODO: 在此添加控件通知处理程序代码
+	//顾名扬完成
+	int nIndex = c_list2.GetSelectionMark();   //获取查询框选中行的行号
+	CString s_id = c_list2.GetItemText(nIndex, 0);   //获取查询框第0列内容
+	CString s_state = c_list2.GetItemText(nIndex, 4);   //获取查询框第4列内容
+	MYSQL_RES* m_res;
+	connectsql(&m_sqlCon_client);
+	USES_CONVERSION;
+	char* m_id = T2A(s_id);
+	char* m_state = T2A(s_state);
+	sprintf_s(query_client, "UPDATE book "
+		"SET book_state='在册' "
+		"where book_id=%s;", m_id);
+	if (mysql_query(&m_sqlCon_client, query_client))
+	{
+		AfxMessageBox(TEXT("归还书籍失败，请重新尝试！"));
+		mysql_close(&m_sqlCon_client);
+		return;
+	}
+	if (s_state == "在册")
+	{
+		AfxMessageBox(TEXT("此书已被归还，请勿重复尝试！"));
+		mysql_close(&m_sqlCon_client);
+		return;
+	}
+	else {
+		AfxMessageBox(TEXT("归还成功！"));
+		mysql_close(&m_sqlCon_client);
+		return;
+	}
 }

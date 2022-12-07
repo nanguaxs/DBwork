@@ -54,4 +54,5 @@ public://顾名扬修改
 	afx_msg void OnBnClickedBorrow();
 	afx_msg void OnStnClickedBookAuthor();
 	afx_msg void OnBnClickedBookQuery2();
+	afx_msg void OnBnClickedReturnback2();
 };
