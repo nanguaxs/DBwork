@@ -8,6 +8,7 @@
 #include"sql.h"
 
 #include"CDBwork_adminDlg.h"
+#include "bookBorrowQuery.h"
 
 MYSQL m_sqlCon_client;
 char query_client[1024] = "";
@@ -38,7 +39,7 @@ void CDBwork_userDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_BOOK_NAME, c_name);
 	DDX_Text(pDX, IDC_EDIT_BOOK_AUTHOR, c_author);
 	DDX_Control(pDX, IDC_LIST1, c_list);
-	DDX_Control(pDX, IDC_LIST2, c_list2);
+	//DDX_Control(pDX, IDC_LIST2, c_list2);
 }
 
 
@@ -64,8 +65,9 @@ BEGIN_MESSAGE_MAP(CDBwork_userDlg, CDialogEx)
 	ON_EN_CHANGE(IDC_EDIT6, &CDBwork_userDlg::OnEnChangeEdit6)
 	ON_BN_CLICKED(IDC_BORROW, &CDBwork_userDlg::OnBnClickedBorrow)
 	ON_STN_CLICKED(IDC_BOOK_AUTHOR, &CDBwork_userDlg::OnStnClickedBookAuthor)
-	ON_BN_CLICKED(IDC_BOOK_QUERY2, &CDBwork_userDlg::OnBnClickedBookQuery2)
-	ON_BN_CLICKED(IDC_RETURNBACK2, &CDBwork_userDlg::OnBnClickedReturnback2)
+	//ON_BN_CLICKED(IDC_BOOK_QUERY2, &CDBwork_userDlg::OnBnClickedBookQuery2)
+	//ON_BN_CLICKED(IDC_RETURNBACK2, &CDBwork_userDlg::OnBnClickedReturnback2)
+	ON_BN_CLICKED(IDC_MINE, &CDBwork_userDlg::OnBnClickedMine)
 END_MESSAGE_MAP()
 
 
@@ -143,21 +145,14 @@ BOOL CDBwork_userDlg::OnInitDialog()//顾名扬增加
 
 	// 获取编程语言列表视图控件的位置和大小   
 	c_list.GetClientRect(&rect);
-	c_list2.GetClientRect(&rect);
 	// 为列表视图控件添加全行选中和栅格风格   
 	c_list.SetExtendedStyle(c_list.GetExtendedStyle() | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
-	c_list2.SetExtendedStyle(c_list2.GetExtendedStyle() | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 	// 为列表视图控件添加列   
 	c_list.InsertColumn(0, _T("书籍编号"), LVCFMT_CENTER, rect.Width() / 5, 0);
 	c_list.InsertColumn(1, _T("书名"), LVCFMT_CENTER, rect.Width() / 5, 1);
 	c_list.InsertColumn(2, _T("作者"), LVCFMT_CENTER, rect.Width() / 5, 2);
 	c_list.InsertColumn(3, _T("出版社"), LVCFMT_CENTER, rect.Width() / 5, 3);
 	c_list.InsertColumn(4, _T("借阅状态"), LVCFMT_CENTER, rect.Width() / 5, 4);
-	c_list2.InsertColumn(0, _T("书籍编号"), LVCFMT_CENTER, rect.Width() / 5, 0);
-	c_list2.InsertColumn(1, _T("书名"), LVCFMT_CENTER, rect.Width() / 5, 1);
-	c_list2.InsertColumn(2, _T("作者"), LVCFMT_CENTER, rect.Width() / 5, 2);
-	c_list2.InsertColumn(3, _T("出版社"), LVCFMT_CENTER, rect.Width() / 5, 3);
-	c_list2.InsertColumn(4, _T("借阅状态"), LVCFMT_CENTER, rect.Width() / 5, 4);
 	//CDBworkDlg* p=CDBworkDlg::pCDBworkDlg;
 	SetConsoleOutputCP(65001);
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -277,7 +272,6 @@ void CDBwork_userDlg::OnBnClickedDonation()//图书捐赠按钮
 	//m_res = NULL;
 	MYSQL_ROW row;
 	CString DonateBookID,DonateBookName,DonateBookAuthor,DonateBookPublisher;
-	connectsql(&m_sqlCon_client);
 	GetDlgItem(IDC_EDIT_BOOK_ID2)->GetWindowText(DonateBookID);
 	GetDlgItem(IDC_EDIT_BOOK_NAME2)->GetWindowText(DonateBookName);
 	GetDlgItem(IDC_EDIT_BOOK_AUTHOR2)->GetWindowText(DonateBookAuthor);
@@ -293,6 +287,7 @@ void CDBwork_userDlg::OnBnClickedDonation()//图书捐赠按钮
 		mysql_close(&m_sqlCon_client);
 		return;
 	}
+	connectsql(&m_sqlCon_client);
 	sprintf_s(query_client, "select book_id"
 		" from book "
 		"where book_id=%s", bid);
@@ -305,15 +300,16 @@ void CDBwork_userDlg::OnBnClickedDonation()//图书捐赠按钮
 		mysql_close(&m_sqlCon_client);
 		return;
 	}
-	sprintf_s(query_client, "INSERT INTO book VALUES('%s','%s','%s','%s','%s');",bid, bname, bauthor, bpublisher,"在册");  
 	if (DonateBookID.IsEmpty() || DonateBookName.IsEmpty() || DonateBookAuthor.IsEmpty() || DonateBookPublisher.IsEmpty())
 	{
 		AfxMessageBox(_T("捐赠失败，请填写完整信息"));
 		mysql_close(&m_sqlCon_client);
 		return;
 	}
-	if (DonateBookID.IsEmpty() || DonateBookName.IsEmpty() || DonateBookAuthor.IsEmpty() || DonateBookPublisher.IsEmpty())
+	if (DonateBookID.IsEmpty()==0 && DonateBookName.IsEmpty()==0 && DonateBookAuthor.IsEmpty() == 0 && DonateBookPublisher.IsEmpty() == 0 )
 	{
+		sprintf_s(query_client, "INSERT INTO book VALUES('%s','%s','%s','%s','%s');", bid, bname, bauthor, bpublisher, "在册");
+		mysql_query(&m_sqlCon_client, query_client);
 		AfxMessageBox(TEXT("捐赠成功，感谢您的捐赠！"));
 		mysql_close(&m_sqlCon_client);
 		return;
@@ -438,7 +434,7 @@ void CDBwork_userDlg::showdata(MYSQL_RES* m_res)//用来显示查询框的内容
 	}
 	return;
 }
-void CDBwork_userDlg::showdata2(MYSQL_RES* m_res)//用来显示借阅框的内容
+/*void CDBwork_userDlg::showdata2(MYSQL_RES* m_res)//用来显示借阅框的内容
 {
 	// TODO: 在此处添加实现代码.
 	CString data[5];
@@ -455,7 +451,7 @@ void CDBwork_userDlg::showdata2(MYSQL_RES* m_res)//用来显示借阅框的内�
 
 	}
 	return;
-}
+}*/
 
 void CDBwork_userDlg::OnBnClickedBorrow()//借阅图书
 {
@@ -500,7 +496,7 @@ void CDBwork_userDlg::OnStnClickedBookAuthor()
 }
 
 
-void CDBwork_userDlg::OnBnClickedBookQuery2()//用户借阅书籍查询
+/*void CDBwork_userDlg::OnBnClickedBookQuery2()//用户借阅书籍查询
 {
 	// TODO: 在此添加控件通知处理程序代码
 	//顾名扬完成
@@ -550,4 +546,13 @@ void CDBwork_userDlg::OnBnClickedReturnback2()//借阅书籍归还
 		mysql_close(&m_sqlCon_client);
 		return;
 	}
+}*/
+
+
+void CDBwork_userDlg::OnBnClickedMine()//跳转到我的借阅和归还
+{
+	// TODO: 在此添加控件通知处理程序代码
+	bookBorrowQuery dlg;
+	dlg.user_id = this->user_id;
+	dlg.DoModal();
 }

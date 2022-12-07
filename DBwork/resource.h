@@ -12,6 +12,7 @@
 #define IDD_DIALOG1                     136
 #define IDD_DIALOG2                     138
 #define IDD_DIALOG3                     142
+#define IDD_DIALOG4                     144
 #define IDC_admin                       1000
 #define IDC_user                        1001
 #define IDC_EDIT_ID                     1002
@@ -62,14 +63,17 @@
 #define IDC_EDIT_BOOK_AUTHOR            1044
 #define IDC_EDIT_KEY                    1045
 #define IDC_RETURNBACK2                 1045
+#define IDC_BUTTON_QUERY                1046
+#define IDC_MINE                        1047
+#define IDC_BUTTON_RETURN               1048
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        144
+#define _APS_NEXT_RESOURCE_VALUE        146
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1046
+#define _APS_NEXT_CONTROL_VALUE         1049
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
