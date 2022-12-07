@@ -461,7 +461,6 @@ void CDBwork_userDlg::OnBnClickedBorrow()//借阅图书
 {
 	// TODO: 在此添加控件通知处理程序代码
 	//顾名扬完成
-	//问题：实际上表里的数据已经改为借阅模式，但是未能够成功实现在显示框内展现借阅的书籍
 	int nIndex = c_list.GetSelectionMark();   //获取查询框选中行的行号
 	CString s_id = c_list.GetItemText(nIndex, 0);   //获取查询框第0列内容
 	CString s_state = c_list.GetItemText(nIndex, 4);   //获取查询框第4列内容
@@ -486,19 +485,12 @@ void CDBwork_userDlg::OnBnClickedBorrow()//借阅图书
 		return;
 	}
 	else{
+		sprintf_s(query_client, "INSERT INTO record VALUES('%s','%s','%s');", m_id, this->user_id, "被借阅");
+		mysql_query(&m_sqlCon_client, query_client);
 		AfxMessageBox(TEXT("借阅成功！"));
 		mysql_close(&m_sqlCon_client);
 		return;
 	}
-	//OnBnClickedBookQuery2();//在借阅框中显示所有自己借过的书
-	/*sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher,book_state"
-		" from book "
-		"where book_state = '被借阅';");
-	mysql_query(&m_sqlCon_client, query_client);
-	m_res = mysql_store_result(&m_sqlCon_client);
-	c_list.DeleteAllItems();
-	this->showdata(m_res);//待定
-	mysql_close(&m_sqlCon_client);*/
 }
 
 
@@ -512,16 +504,16 @@ void CDBwork_userDlg::OnBnClickedBookQuery2()//用户借阅书籍查询
 {
 	// TODO: 在此添加控件通知处理程序代码
 	//顾名扬完成
+	c_list2.DeleteAllItems();
 	MYSQL_RES* m_res;
 	connectsql(&m_sqlCon_client);
 	USES_CONVERSION;
 	sprintf_s(query_client, "select book_id,book_name,book_author,book_publisher,book_state"
-		" from user_account,students，book, record "
-		"where S_id = user_id AND user_id = id_user AND book_state = '被借阅';");
+		" from user_account,students,book,record"
+		"where user_id='%s' AND S_id = user_id AND user_id = id_user AND book_state = '被借阅' AND state = '被借阅';", this->user_id);
 	mysql_query(&m_sqlCon_client, query_client);
 	m_res = mysql_store_result(&m_sqlCon_client);
-	c_list2.DeleteAllItems();
-	this->showdata2(m_res);
+    this->showdata2(m_res);
 	mysql_close(&m_sqlCon_client);
 }
 
