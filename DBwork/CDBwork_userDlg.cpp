@@ -300,12 +300,6 @@ void CDBwork_userDlg::OnBnClickedDonation()//图书捐赠按钮
 		mysql_close(&m_sqlCon_client);
 		return;
 	}
-	if (DonateBookID.IsEmpty() || DonateBookName.IsEmpty() || DonateBookAuthor.IsEmpty() || DonateBookPublisher.IsEmpty())
-	{
-		AfxMessageBox(_T("捐赠失败，请填写完整信息"));
-		mysql_close(&m_sqlCon_client);
-		return;
-	}
 	if (DonateBookID.IsEmpty()==0 && DonateBookName.IsEmpty()==0 && DonateBookAuthor.IsEmpty() == 0 && DonateBookPublisher.IsEmpty() == 0 )
 	{
 		sprintf_s(query_client, "INSERT INTO book VALUES('%s','%s','%s','%s','%s');", bid, bname, bauthor, bpublisher, "在册");

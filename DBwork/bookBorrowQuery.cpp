@@ -93,7 +93,6 @@ void bookBorrowQuery::OnBnClickedButtonQuery()//借阅查询
 	sprintf_s(query_borrow, "select B.book_id,B.book_name,B.book_author,B.book_publisher,B.book_state"
 		" from book B,record R,user_account U,students S"
 		" where U.user_id='%s' AND U.user_id = S.S_id AND U.user_id = R.id_user AND B.book_state = R.state AND R.id_book=B.book_id;", this->user_id);
-	//SQL语句出现问题，需要修改
 	connectsql(&m_sqlCon_borrow);
 	mysql_query(&m_sqlCon_borrow, query_borrow);
 	if ((m_res = mysql_store_result(&m_sqlCon_borrow)) == NULL) {

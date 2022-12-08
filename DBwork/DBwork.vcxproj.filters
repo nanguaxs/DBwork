@@ -54,6 +54,9 @@
     <ClInclude Include="bookBorrowQuery.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="adminBookBorrowRecord.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DBwork.cpp">
@@ -81,6 +84,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="bookBorrowQuery.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="adminBookBorrowRecord.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
