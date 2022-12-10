@@ -268,10 +268,8 @@ void CDBwork_userDlg::OnBnClickedDonation()//图书捐赠按钮
 		mysql_close(&m_sqlCon_client);
 		return;
 	}
-	sprintf_s(query_client, "INSERT INTO book VALUES('%s','%s','%s','%s','%s');",
-		bid, bname, bauthor, bpublisher, "在册");
-	//sprintf_s(query_client, "INSERT INTO book(book_id,book_name,book_author,book_publisher，book_state) VALUES('%s','%s','%s','%s','%s');",
-		//bid, bname, bauthor, bpublisher,"在册");  //出现问题但不知道怎么改（_Param_(7) 在对“sprintf_s”调用中必须是字符串地址。实际类型: “int”）
+	sprintf_s(query_client, "INSERT INTO book(book_id,book_name,book_author,book_publisher，book_state) VALUES('%s','%s','%s','%s','%s');",
+		bid, bname, bauthor, bpublisher,"在册");  //出现问题但不知道怎么改（_Param_(7) 在对“sprintf_s”调用中必须是字符串地址。实际类型: “int”）
 	if (mysql_query(&m_sqlCon_client, query_client))
 	{
 		AfxMessageBox(TEXT("捐赠失败，请重新尝试！"));
