@@ -9,6 +9,7 @@
 #include "sql.h"
 #include< windows.h >
 #include"adminmanage.h"
+#include "adminBookBorrowRecord.h"
 
 MYSQL m_sqlCon_admin;
 
@@ -302,7 +303,7 @@ void CDBwork_adminDlg::OnLvnItemchangedList1(NMHDR* pNMHDR, LRESULT* pResult)
 }
 
 
-void CDBwork_adminDlg::OnBnClickedButton5()
+void CDBwork_adminDlg::OnBnClickedButton5()//图书资料管理
 {
 	// TODO: 在此添加控件通知处理程序代码
 	adminmanage dlg;

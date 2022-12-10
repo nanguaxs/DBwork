@@ -2,6 +2,7 @@
 // Microsoft Visual C++ 生成的包含文件。
 // 供 DBwork.rc 使用
 //
+#define IDOK2                           2
 #define IDM_ABOUTBOX                    0x0010
 #define IDD_ABOUTBOX                    100
 #define IDS_ABOUTBOX                    101
@@ -12,6 +13,8 @@
 #define IDD_DIALOG1                     136
 #define IDD_DIALOG2                     138
 #define IDD_DIALOG3                     142
+#define IDD_DIALOG4                     144
+#define IDD_DIALOG5                     146
 #define IDC_admin                       1000
 #define IDC_user                        1001
 #define IDC_EDIT_ID                     1002
@@ -39,6 +42,7 @@
 #define IDC_LIST3                       1026
 #define IDC_BUTTON5                     1027
 #define IDC_CHECK1                      1028
+#define IDC_BUTTON8                     1028
 #define IDC_BUTTON6                     1029
 #define IDC_EDIT14                      1030
 #define IDC_EDIT_BOOK_NAME2             1030
@@ -59,17 +63,24 @@
 #define IDC_EDIT_BOOK_ID                1041
 #define IDC_EDIT_BOOK_ID2               1042
 #define IDC_EDIT_BOOK_NAME              1043
+#define IDC_EDIT_NAME1                  1043
 #define IDC_EDIT_BOOK_AUTHOR            1044
 #define IDC_EDIT_KEY                    1045
 #define IDC_RETURNBACK2                 1045
+#define IDC_BUTTON_QUERY                1046
+#define IDC_EDIT_ID2                    1046
+#define IDC_MINE                        1047
+#define IDC_EDIT_ID1                    1047
+#define IDC_BUTTON_RETURN               1048
+#define IDC_EDIT_NAME2                  1049
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        144
+#define _APS_NEXT_RESOURCE_VALUE        148
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1046
+#define _APS_NEXT_CONTROL_VALUE         1050
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

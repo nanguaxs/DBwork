@@ -28,9 +28,10 @@ public://顾名扬修改
 	//CString c_publisher;
 	//CString c_state;
 	CListCtrl c_list;
-	CListCtrl c_list2;
+	//CListCtrl c_list2;
+	virtual BOOL OnInitDialog();
 	void showdata( MYSQL_RES* m_res);
-	void showdata2(MYSQL_RES* m_res);
+	//void showdata2(MYSQL_RES* m_res);
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedButton4();
 	afx_msg void OnEnChangeEdit16();
@@ -52,5 +53,7 @@ public://顾名扬修改
 	afx_msg void OnEnChangeEdit6();
 	afx_msg void OnBnClickedBorrow();
 	afx_msg void OnStnClickedBookAuthor();
-	afx_msg void OnBnClickedBookQuery2();
+	//afx_msg void OnBnClickedBookQuery2();
+	//afx_msg void OnBnClickedReturnback2();
+	afx_msg void OnBnClickedMine();
 };
