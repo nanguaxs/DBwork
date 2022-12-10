@@ -108,6 +108,7 @@ void paperDlg::OnBnClickedButton4()//查询
 	m_res = mysql_store_result(&sql_paper);
 	this->showdata(m_res);
 	mysql_close(&sql_paper);
+	return;
 }
 
 
@@ -206,7 +207,7 @@ void paperDlg::OnBnClickedButton6()//上传
 	this->showdata(m_res);
 	AfxMessageBox(TEXT("上传论文成功！"));
 	mysql_close(&sql_paper);
-
+	return;
 
 }
 
@@ -253,4 +254,5 @@ void paperDlg::OnBnClickedButton5()//论文下载
 	this->showdata(m_res);
 	AfxMessageBox(TEXT("下载成功！"));
 	mysql_close(&sql_paper);
+	return;
 }

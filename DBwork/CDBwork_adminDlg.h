@@ -35,4 +35,5 @@ public:
 	void showdata( MYSQL_RES* m_res);
 	afx_msg void OnLvnItemchangedList1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClickedButton5();
+	afx_msg void OnBnClickedButton8();
 };

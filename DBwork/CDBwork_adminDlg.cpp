@@ -10,7 +10,7 @@
 #include< windows.h >
 #include"adminmanage.h"
 #include "adminBookBorrowRecord.h"
-
+#include"adminpaper.h"
 MYSQL m_sqlCon_admin;
 
 //#include "pch.h"
@@ -54,6 +54,7 @@ BEGIN_MESSAGE_MAP(CDBwork_adminDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON4, &CDBwork_adminDlg::OnBnClickedButton4)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST1, &CDBwork_adminDlg::OnLvnItemchangedList1)
 	ON_BN_CLICKED(IDC_BUTTON5, &CDBwork_adminDlg::OnBnClickedButton5)
+	ON_BN_CLICKED(IDC_BUTTON8, &CDBwork_adminDlg::OnBnClickedButton8)
 END_MESSAGE_MAP()
 
 
@@ -309,4 +310,12 @@ void CDBwork_adminDlg::OnBnClickedButton5()//图书资料管理
 	adminmanage dlg;
 	dlg.DoModal();
 
+}
+
+
+void CDBwork_adminDlg::OnBnClickedButton8()//论文资料管理
+{
+	// TODO: 在此添加控件通知处理程序代码
+	adminpaper dlg;
+	dlg.DoModal();
 }
