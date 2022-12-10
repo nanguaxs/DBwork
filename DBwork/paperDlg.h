@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "afxdialogex.h"
-
+#include"sql.h"
 
 // paperDlg 对话框
 
@@ -21,4 +21,11 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedButton4();
+	virtual BOOL OnInitDialog();
+	CListCtrl m_list;
+	int showdata(MYSQL_RES* m_res);
+	afx_msg void OnBnClickedButton6();
+	afx_msg void OnBnClickedButton5();
 };
