@@ -99,6 +99,10 @@ void paperDlg::OnBnClickedButton4()//查询
 			"where P_author like '%%%s%%' AND P_name like '%%%s%%' AND P_id = %s", m_author, m_name,m_id
 		);
 	}
+	int state = ((CButton*)GetDlgItem(IDC_CHECK1))->GetCheck();
+	if (state == 1) {
+		strcat_s(query_paper, " ORDER BY download");
+	}
 	mysql_query(&sql_paper, query_paper);
 	MYSQL_RES *m_res;
 	m_res = mysql_store_result(&sql_paper);
@@ -192,6 +196,10 @@ void paperDlg::OnBnClickedButton6()//上传
 	sprintf_s(query_paper, "select P_id,P_name,P_author,download"
 		" from paper "
 	);
+	int state = ((CButton*)GetDlgItem(IDC_CHECK1))->GetCheck();
+	if (state == 1) {
+		strcat_s(query_paper, " ORDER BY download");
+	}
 	mysql_query(&sql_paper, query_paper);
 	m_res = mysql_store_result(&sql_paper);
 	m_list.DeleteAllItems();
@@ -235,6 +243,10 @@ void paperDlg::OnBnClickedButton5()//论文下载
 	sprintf_s(query_paper, "select P_id,P_name,P_author,download"
 		" from paper "
 	);
+	int state = ((CButton*)GetDlgItem(IDC_CHECK1))->GetCheck();
+	if (state == 1) {
+		strcat_s(query_paper, " ORDER BY download");
+	}
 	mysql_query(&sql_paper, query_paper);
 	m_res = mysql_store_result(&sql_paper);
 	m_list.DeleteAllItems();
