@@ -255,7 +255,7 @@ void CDBwork_adminDlg::OnBnClickedButton4()//修改
 		return;
 	}
 	sprintf_s(query_admin, "UPDATE students"
-		" SET S_name='%s',S_sex='%s',S_age='%s'; "
+		" SET S_name='%s',S_sex='%s',S_age='%s' "
 		"where S_id='%s'"//默认密码123456
 		, m_name,m_sex,m_age,m_id);
 	if (mysql_query(&m_sqlCon_admin, query_admin))
