@@ -135,7 +135,8 @@ void bookBorrowQuery::OnBnClickedButtonReturn()//归还图书
 			" WHERE id_book='%s' AND id_user='%s' AND state='%s';", m_id, this->user_id, "被借阅");
 		mysql_query(&m_sqlCon_borrow, query_borrow);
 		AfxMessageBox(TEXT("归还成功！"));
-		mysql_close(&m_sqlCon_borrow);
-		return;
+		OnBnClickedButtonQuery();
+		//mysql_close(&m_sqlCon_borrow);
+		//return;
 	}
 }

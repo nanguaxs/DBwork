@@ -311,8 +311,9 @@ void CDBwork_userDlg::OnBnClickedDonation()//图书捐赠按钮
 		sprintf_s(query_client, "INSERT INTO book VALUES('%s','%s','%s','%s','%s');", bid, bname, bauthor, bpublisher, "在册");
 		mysql_query(&m_sqlCon_client, query_client);
 		AfxMessageBox(TEXT("捐赠成功，感谢您的捐赠！"));
-		mysql_close(&m_sqlCon_client);
-		return;
+		OnBnClickedBookQuery();//实时更新
+		//mysql_close(&m_sqlCon_client);
+		//return;
 	}
 }
 
@@ -484,8 +485,9 @@ void CDBwork_userDlg::OnBnClickedBorrow()//借阅图书
 		sprintf_s(query_client, "INSERT INTO record VALUES('%s','%s','%s');", m_id, this->user_id, "被借阅");
 		mysql_query(&m_sqlCon_client, query_client);
 		AfxMessageBox(TEXT("借阅成功！"));
-		mysql_close(&m_sqlCon_client);
-		return;
+		OnBnClickedBookQuery();
+		//mysql_close(&m_sqlCon_client);
+		//return;
 	}
 }
 

@@ -162,8 +162,8 @@ void CDBwork_adminDlg::OnBnClickedButton2()//删除按钮
 		return;
 	}
 	m_list.DeleteItem(nIndex);//删除列表中的项
-	
-	mysql_close(&m_sqlCon_admin);
+	OnBnClickedButton1();
+	//mysql_close(&m_sqlCon_admin);
 }
 
 
@@ -222,7 +222,8 @@ void CDBwork_adminDlg::OnBnClickedButton3()//插入
 	m_res = mysql_store_result(&m_sqlCon_admin);
 	m_list.DeleteAllItems();
 	this->showdata(m_res);
-	mysql_close(&m_sqlCon_admin);
+	OnBnClickedButton1();//实时更新
+	//mysql_close(&m_sqlCon_admin);
 }
 
 
@@ -272,7 +273,8 @@ void CDBwork_adminDlg::OnBnClickedButton4()//修改
 	m_res = mysql_store_result(&m_sqlCon_admin);
 	m_list.DeleteAllItems();
 	this->showdata(m_res);
-	mysql_close(&m_sqlCon_admin);
+	OnBnClickedButton1();//实时更新
+	//mysql_close(&m_sqlCon_admin);
 }
 
 

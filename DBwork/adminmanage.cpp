@@ -108,8 +108,7 @@ void adminmanage::OnBnClickedBookQuery()//书籍查询
 	char* b_author = T2A(author);
 	if (id.IsEmpty() && name.IsEmpty() && author.IsEmpty()) {//三个都不知道，则查询所有在库书籍
 		sprintf_s(query_adminbook, "select book_id,book_name,book_author,book_publisher,book_state"
-			" from book ;"
-		);
+			" from book ;");
 	}
 	else if (id.IsEmpty() && name.IsEmpty() == 0 && author.IsEmpty() == 0) {//id不知道
 		sprintf_s(query_adminbook, "select book_id,book_name,book_author,book_publisher,book_state"
@@ -204,8 +203,9 @@ void adminmanage::OnBnClickedDonation()//添加书籍
 		sprintf_s(query_adminbook, "INSERT INTO book VALUES('%s','%s','%s','%s','%s');", bid, bname, bauthor, bpublisher, "在册");
 		mysql_query(&m_sqlCon_adminbook, query_adminbook);
 		AfxMessageBox(TEXT("成功添加书籍！"));
-		mysql_close(&m_sqlCon_adminbook);
-		return;
+		OnBnClickedBookQuery();//实现实时更新
+		//mysql_close(&m_sqlCon_adminbook);
+		//return;
 	}
 }
 
@@ -234,10 +234,11 @@ void adminmanage::OnBnClickedReturnback2()//删除书籍
 		mysql_close(&m_sqlCon_adminbook);
 		return;
 	}
-	else {
+	else {//存在小问题
 		AfxMessageBox(TEXT("成功删除书籍！"));
-		mysql_close(&m_sqlCon_adminbook);
-		return;
+		OnBnClickedBookQuery();//实现实时更新
+		//mysql_close(&m_sqlCon_adminbook);
+		//return;
 	}
 }
 
