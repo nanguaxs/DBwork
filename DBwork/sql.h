@@ -14,7 +14,7 @@ static int connectsql(MYSQL* p) {
 		"123456lC", "dbwork", 3306, NULL, 0))
 	{*/
 	if (!mysql_real_connect(p, "localhost", "root",
-		"123456", "docmanagement", 3306, NULL, 0))
+		"123456", "booksystem", 3306, NULL, 0))
 	{
 		return 0;
 	}

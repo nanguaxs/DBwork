@@ -32,4 +32,5 @@ public:
 	afx_msg void OnBnClickedDonation();
 	afx_msg void OnBnClickedReturnback2();
 	afx_msg void OnBnClickedBorrow();
+	CEdit m_edit1;
 };

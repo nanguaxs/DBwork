@@ -40,6 +40,7 @@ void CDBwork_userDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_BOOK_AUTHOR, c_author);
 	DDX_Control(pDX, IDC_LIST1, c_list);
 	//DDX_Control(pDX, IDC_LIST2, c_list2);
+	DDX_Control(pDX, IDC_EDIT6, m_edit2);
 }
 
 
@@ -225,6 +226,11 @@ void CDBwork_userDlg::OnBnClickedBookQuery()//书籍查询
 		return;
 	}
 	this->showdata(m_res);
+	//计算总量
+	int nLine = c_list.GetItemCount();
+	CString str;
+	str.Format(_T("%d"), nLine);
+	m_edit2.SetWindowTextW((LPCTSTR)str);
 	mysql_close(&m_sqlCon_client);
 	
 }

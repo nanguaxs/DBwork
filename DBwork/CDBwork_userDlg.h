@@ -56,4 +56,5 @@ public://顾名扬修改
 	//afx_msg void OnBnClickedBookQuery2();
 	//afx_msg void OnBnClickedReturnback2();
 	afx_msg void OnBnClickedMine();
+	CEdit m_edit2;
 };

@@ -32,6 +32,7 @@ void adminmanage::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST1, m_list1);
+	DDX_Control(pDX, IDC_EDIT6, m_edit1);
 }
 
 
@@ -155,6 +156,11 @@ void adminmanage::OnBnClickedBookQuery()//书籍查询
 		return;
 	}
 	this->showdata(m_res);
+	//计算总量
+	int nLine = m_list1.GetItemCount();
+	CString str;
+	str.Format(_T("%d"), nLine);
+	m_edit1.SetWindowTextW((LPCTSTR)str);
 	mysql_close(&m_sqlCon_adminbook);
 }
 
